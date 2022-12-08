@@ -34,7 +34,7 @@
     $error = [];
 
     if (comprobar_parametros($par)) {
-        validar_codigo($codigo, $error);
+        validar_codigo_insertar($codigo, $error);
         validar_denominacion($denominacion, $error);
         if (!hay_errores($error)) {
             insertar_alumnos($par, $pdo);

@@ -32,9 +32,7 @@
     //se puede repetir el codigo
 
     if (comprobar_parametros($par)) {
-        if(!mismo_codigo($id, $codigo, $pdo)){
-            validar_codigo($id, $codigo, $pdo, $error);
-        }
+        validar_codigo_modificar($id, $codigo, $pdo, $error);
         validar_denominacion($denominacion, $error);
         if (!hay_errores($error)) {
             modificar_alumnos($codigo, $denominacion, $id, $pdo);
@@ -47,6 +45,7 @@
     ?>
     <div>
         <form action="" method="post">
+            <?php token_csrf() ?>
             <div>
                 <label <?= css_campo_error('codigo', $error) ?>>
                     Código:

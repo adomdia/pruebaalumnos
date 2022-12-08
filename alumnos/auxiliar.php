@@ -14,12 +14,23 @@ function insertar_alumno($codigo, $denominacion)
     ]);
 }
 
-function validar_codigo($codigo, &$error)
+function validar_codigo_insertar($codigo, &$error)
 {
     validar_digitos($codigo, 'codigo', $error);
     validar_longitud($codigo, 'codigo', 1, 4, $error);
     if (!isset($error['codigo'])) {
         validar_existe_codigo_alumno($codigo, $error);
+    }
+}
+
+function validar_codigo_modificar($id, $codigo, $pdo, &$error)
+{
+    if(!mismo_codigo($id, $codigo, $pdo)){
+        validar_digitos($codigo, 'codigo', $error);
+        validar_longitud($codigo, 'codigo', 1, 4, $error);
+        if (!isset($error['codigo'])) {
+            validar_existe_codigo_alumno($codigo, $error);
+        }
     }
 }
 
@@ -63,10 +74,10 @@ function mismo_codigo($id, $codigo, $pdo)
                             WHERE id = :id AND codigo = :codigo");
     $sent->execute([':id' => $id, ':codigo' => $codigo]);
     $total = $sent->fetchColumn();
-    if ($total = 1) {
-        return true;
+    if ($total == 0) {
+        return false;
     }
-    return false;
+    return true;
 }
 
 function modificar_alumnos($codigo, $denominacion, $id, $pdo)
